@@ -27,14 +27,14 @@
     <!-- Add Trip Form -->
     <section id="add" class="bg-white rounded-xl shadow p-6 my-8">
       <h3 class="text-xl font-semibold mb-4">Add a Trip</h3>
-      <form class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <input type="text" placeholder="From (City)" class="p-2 border rounded" required />
-        <input type="text" placeholder="To (City)" class="p-2 border rounded" required />
-        <input type="datetime-local" class="p-2 border rounded" required />
-        <input type="number" placeholder="Available Seats" class="p-2 border rounded" required />
-        <input type="text" placeholder="Price (optional)" class="p-2 border rounded" />
-        <input type="text" placeholder="Your Contact (Telegram, WhatsApp...)" class="p-2 border rounded" required />
-        <button class="md:col-span-2 bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Submit</button>
+      <form id="tripForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input name="from" type="text" placeholder="From (City)" class="p-2 border rounded" required />
+        <input name="to" type="text" placeholder="To (City)" class="p-2 border rounded" required />
+        <input name="datetime" type="datetime-local" class="p-2 border rounded" required />
+        <input name="seats" type="number" placeholder="Available Seats" class="p-2 border rounded" required />
+        <input name="price" type="text" placeholder="Price (optional)" class="p-2 border rounded" />
+        <input name="contact" type="text" placeholder="Your Contact (Telegram, WhatsApp...)" class="p-2 border rounded" required />
+        <button type="submit" class="md:col-span-2 bg-blue-600 text-white py-2 rounded hover:bg-blue-700">Submit</button>
       </form>
     </section>
 
@@ -62,5 +62,35 @@
   <footer class="bg-white text-center p-4 mt-8 text-sm text-gray-500">
     © 2025 Joinigo. Ride together.
   </footer>
+
+  <script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxzyW-orTlbFRnwWFU_8dhBnWTSPPm2LihuoBDNnFArymL4w3nMeviXBWLK0qeYsxo7/exec';
+    const form = document.getElementById('tripForm');
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const data = {
+        from: form.from.value,
+        to: form.to.value,
+        datetime: form.datetime.value,
+        seats: form.seats.value,
+        price: form.price.value,
+        contact: form.contact.value,
+      };
+
+      fetch(scriptURL, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: { 'Content-Type': 'application/json' }
+      })
+      .then(res => {
+        alert("🚗 Trip submitted successfully!");
+        form.reset();
+      })
+      .catch(err => {
+        alert("❌ Submission failed: " + err.message);
+      });
+    });
+  </script>
 </body>
 </html>
